@@ -4126,6 +4126,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderSpecialtyCarousel();
   renderCheckupSection("all");
   renderMensWellnessRail();
+  renderPopularTests();
   renderSectionPills();
   renderTestCards();
   setupCleanNavTabs();
@@ -4211,42 +4212,32 @@ function setupMobileCardViewMore(container, cardSelector, label) {
   container.appendChild(button);
 }
 
-// 7. Render Checkup Section (The Checkup Packages created for the user!)
-function renderCheckupSection(group = null) {
-  const container = document.getElementById("checkupCardsGrid");
+// 7. Popular Routine Diagnostic Tests (CBC, FBS, PPBS, Widal, Dengue Profile, LFT, RFT, Lipid Profile)
+const POPULAR_ROUTINE_TEST_IDS = [
+  "test-cbc",
+  "test-fbs",
+  "test-ppbs",
+  "test-widal",
+  "test-dengue-profile",
+  "test-lft-profile",
+  "test-kft-profile",
+  "test-lipid-profile"
+];
+
+function renderPopularTests() {
+  const container = document.getElementById("popularTestsGrid");
   if (!container) return;
 
-  if (group) {
-    state.activeCheckupFilter = group;
-  }
+  const items = POPULAR_ROUTINE_TEST_IDS
+    .map(id => CATALOG.find(item => item.id === id))
+    .filter(Boolean);
 
-  const filter = state.activeCheckupFilter || "all";
+  container.innerHTML = items.map(item => renderSingleCardHtml(item)).join('');
+}
+window.renderPopularTests = renderPopularTests;
 
-  // Update pills UI
-  const pills = document.querySelectorAll("#checkupPillsBar .section-pill");
-  pills.forEach(p => {
-    const grp = p.getAttribute("data-group");
-    if (grp === filter) {
-      p.classList.add("active");
-    } else {
-      p.classList.remove("active");
-    }
-  });
-
-  let checkupList = CATALOG.filter(item => item.type === "package" && !item.planCollection);
-  if (filter !== "all") {
-    checkupList = checkupList.filter(item => item.categoryGroup === filter);
-  }
-
-  // Keep the newly added premium plan visible at the front of the package grid.
-  checkupList.sort((a, b) => {
-    const aFeatured = a.id === "pkg-wellness-premium-c-pro-utsh" ? 1 : 0;
-    const bFeatured = b.id === "pkg-wellness-premium-c-pro-utsh" ? 1 : 0;
-    return bFeatured - aFeatured;
-  });
-
-  container.innerHTML = checkupList.map(item => renderSingleCardHtml(item, true)).join('');
-  setupMobileCardViewMore(container, '.test-card', 'checkups');
+function renderCheckupSection(group = null) {
+  renderPopularTests();
 }
 
 // 7a. Wellness plan fan-card rail. The data collection stays open for additional plans.
@@ -5469,6 +5460,7 @@ function resetFilters() {
   updateBreadcrumb();
   renderSpecialtyCarousel();
   renderCheckupSection("all");
+  renderPopularTests();
   renderSectionPills();
   renderTestCards();
 }
