@@ -231,7 +231,7 @@ const SECTIONS = [
     num: 14,
     name: "14. Health Checkup Packages",
     shortName: "Full Body Checkups",
-    badge: "19 Packages",
+    badge: "5 Wellness Plans",
     desc: "Curated preventive health packages, full-body wellness, and organ-specific checkups.",
     color: "#F26D00",
     iconSvg: `<svg width="40" height="40" viewBox="0 0 48 48" fill="none">
@@ -4650,7 +4650,7 @@ function renderSectionPills() {
       class="section-pill checkup-pill" 
       onclick="scrollToSection('checkupsSection')"
     >
-      <span>🏥 Full Body Checkups (19)</span>
+      <span>🏥 Full Body Checkups (5)</span>
     </button>
   `;
 
